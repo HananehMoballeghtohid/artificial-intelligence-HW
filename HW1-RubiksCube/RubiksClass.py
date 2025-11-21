@@ -102,3 +102,12 @@ class RubiksCube4:
                 for f2 in range(4):
                     moves.append((axis, f1, f2))
         return moves
+
+    def heuristic(self):
+        """
+        Calculates the number of misaligned colors (Hamming Distance)
+        compared to the solved state using NumPy for speed.
+        """
+        solved_cubies = np.array(self.solved_hash, dtype=np.int8).reshape(4, 4, 4, 3)
+        misaligned = self.cubies != solved_cubies
+        return np.sum(misaligned)
