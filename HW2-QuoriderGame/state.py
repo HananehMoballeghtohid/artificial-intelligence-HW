@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass, field
 from typing import FrozenSet
 from playpiece import Pawn, Wall
@@ -13,14 +14,16 @@ class State:
     active_player: str = "MAX"  # "MAX" or "MIN"
 
     @staticmethod
-    def get_initial_state() -> "State":
+    def get_initial_state(random_turn: bool = False) -> "State":
+        player = random.choice(["MAX", "MIN"]) if random_turn else "MAX"
+        opponent = "MIN" if player == "MAX" else "MAX"
         return State(
-            p1=Pawn(1, 5, "MAX"),
-            p2=Pawn(9, 5, "MIN"),
+            p1=Pawn(1, 5, player),
+            p2=Pawn(9, 5, opponent),
             p1_walls=10,
             p2_walls=10,
             walls=frozenset(),
-            active_player="MAX",
+            active_player=player,
         )
 
     def display(self):
