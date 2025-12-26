@@ -10,16 +10,18 @@ def edge_blocked(state: State, a: Position, b: Position) -> bool:
     return any(w.blocks_edge(a, b) for w in state.walls)
 
 
-def wall_conflicts(state: State, new_wall: Wall) -> bool:
+def wall_conflicts(state: "State", new_wall: "Wall") -> bool:
     for w in state.walls:
-        if w.row == new_wall.row and w.col == new_wall.col:
-            return True
-        if (
-            w.orientation != new_wall.orientation
-            and w.row == new_wall.row
-            and w.col == new_wall.col
-        ):
-            return True
+        if w.orientation == new_wall.orientation:
+            if w.row == new_wall.row and w.col == new_wall.col:
+                return True
+        if w.orientation != new_wall.orientation:
+            if new_wall.orientation == "H" and w.orientation == "V":
+                if w.row == new_wall.row and w.col == new_wall.col:
+                    return True
+            elif new_wall.orientation == "V" and w.orientation == "H":
+                if w.row == new_wall.row and w.col == new_wall.col:
+                    return True
     return False
 
 
